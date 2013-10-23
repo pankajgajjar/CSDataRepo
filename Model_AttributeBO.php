@@ -7,7 +7,7 @@ public $attributeValue;
 public $attributeName;
 public $productId;
 
-function populate($attributeId,$attributeValue,$attributeName,$productId)
+public function __construct($attributeId,$attributeValue,$attributeName,$productId)
 {
 	$this->attributeId = $attributeId;
 	$this->attributeName = $attributeName;
