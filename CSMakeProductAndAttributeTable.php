@@ -1,12 +1,13 @@
 <?php
 include 'CSStoreDataUsingRedBeanPHP.php';
 require_once 'CSGetDataProductForExport.php';
+require_once 'CSStoreDataInterface.php';
 
-
+$oCSStoreData = new CSStoreDataUsingRedBeanPHP();
 
 // Deleting attribute and Product Table for test Purposes
-CSStoreDataUsingRedBeanPHP::deleteProductTable();
-CSStoreDataUsingRedBeanPHP::deleteAttributeTable();
+$oCSStoreData->deleteProductTable();
+$oCSStoreData->deleteAttributeTable();
 
 //Initiating Timer
 $iTimer = microtime(true);
@@ -22,8 +23,9 @@ $iTotalParentProductsCount = sizeof($aParentProducts);
 
 
 // Creating the Transaction Table
-$oTest = CSStoreDataUsingRedBeanPHP::getTransactionObject();
-$iTid = CSStoreDataUsingRedBeanPHP::getTID();
+
+$oTest = $oCSStoreData->getTransactionObject();
+$iTid = $oCSStoreData->getTID();
 
 
 	
@@ -37,7 +39,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
 	$aChildrenlist = CSGetDataProductForExport::getChildrenForGivenProduct($aParentProducts[$i]);
 
 	// Creating Product Object for Parent
-	$oPtable = CSStoreDataUsingRedBeanPHP::getProductObject();
+	$oPtable = $oCSStoreData->getProductObject();
 	
 			
 	// Storing Product Information for the GIven Parent
@@ -48,21 +50,21 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
     $oPtable->tranactionid = $iTid;
     $oPtable->parentid = CSGetDataProductForExport::getParentId($aParentProducts[$i]);
     $oPtable->parentproductname = CSGetDataProductForExport::getParentLabel($aParentProducts[$i]);
-    $iProductid = CSStoreDataUsingRedBeanPHP::storeObject($oPtable);
+    $iProductid = $oCSStoreData->storeObject($oPtable);
 	$iParentCounter = 0;
 	
 	
     // Storing Atrribute INformation for the Given Parent
     foreach($aAttributeListOfParents as $oValue)
     {
-                $oAtable[ $iParentCounter] = CSStoreDataUsingRedBeanPHP::getAttributeObject();
+                $oAtable[ $iParentCounter] = $oCSStoreData->getAttributeObject();
                 $oAtable[ $iParentCounter]->productId = $aProductInformationList['ID'];
 				$oAtable[ $iParentCounter]->attributeId = $oValue['attributeId'];
 				$oAtable[ $iParentCounter]->attributeName = $oValue['attributeName'];
 				$oAtable[ $iParentCounter]->attributeValue = $oValue['attributeValue'];		
                 $iParentCounter++;
     }
-    $iAtributeidForParents = CSStoreDataUsingRedBeanPHP::storeAllObject($oAtable);
+    $iAtributeidForParents = $oCSStoreData->storeAllObject($oAtable);
     
     
     
@@ -72,7 +74,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
      for($j =0;$j<sizeof($aChildrenlist);$j++)
      {
      	// Creating Product object for Children.
-        $oPtable = CSStoreDataUsingRedBeanPHP::getProductObject();
+        $oPtable = $oCSStoreData->getProductObject();
         
         $aChildinformation = CSGetDataProductForExport::getProductInformationForGivenProduct($aChildrenlist[$j]);
         $attributeListOfChild = CSGetDataProductForExport::getAllAttributesForGivenProduct($aChildrenlist[$j]);
@@ -83,7 +85,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
  		$oPtable->tranactionid = $iTid;
  		$oPtable->parentid = CSGetDataProductForExport::getParentId($aChildrenlist[$j]);
  		$oPtable->parentproductname = CSGetDataProductForExport::getParentLabel($aChildrenlist[$j]);        
-        $productid = CSStoreDataUsingRedBeanPHP::storeObject($oPtable);
+        $productid = $oCSStoreData->storeObject($oPtable);
     
          //Inserting CHildren Attributes into Attributes Table.
           foreach($attributeListOfChild as $oValue)
@@ -96,7 +98,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
                  $iChildrenCounter++;
                 
             }
-               $atributeidForChildren = CSStoreDataUsingRedBeanPHP::storeAllObject($oCtable);
+               $atributeidForChildren = $oCSStoreData->storeAllObject($oCtable);
 	}
 	
 	
@@ -104,7 +106,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
 }
 
 //Inserting Row In Transaction Table
-$iTrid =CSStoreDataUsingRedBeanPHP::createProductTransactionTable($oTest,$iTid);
+$iTrid =$oCSStoreData->createProductTransactionTable($oTest,$iTid);
 
 //Displaying Total TIme Required in Seconds for Test Purposes.
 print_r(microtime(true)-$iTimer.'  '.'sec');

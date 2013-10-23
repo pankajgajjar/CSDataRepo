@@ -2,8 +2,9 @@
 
 require_once 'rb.php';
 require_once 'CSGetDataProductForExport.php';
+require_once 'CSStoreDataInterface.php';
 R::setup('mysql:host=localhost;dbname=test','root','');
-class CSStoreDataUsingRedBeanPHP {
+class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface {
   
 	
 	/*
@@ -31,7 +32,7 @@ class CSStoreDataUsingRedBeanPHP {
      * Return Bean of the Product Table
      * @access public
      */
-    function getProductObject()
+    public function getProductObject()
     {
    		 $oPtable = R::dispense('csdataproducts');
     	 return $oPtable;
@@ -42,7 +43,7 @@ class CSStoreDataUsingRedBeanPHP {
      * @access public
      */
     
-    function getAttributeObject( $iNumOfObject = 1 )
+     public function getAttributeObject( $iNumOfObject = 1 )
     {
     	$oCtable = R::dispense('csdataattribute',$iNumOfObject);
     	return $oCtable;
@@ -53,7 +54,7 @@ class CSStoreDataUsingRedBeanPHP {
      * Return Bean of the Transaction Table
      * @access public
      */
-	function getTransactionObject()
+	public function getTransactionObject()
     {
     	$oCtable = R::dispense('cstransaction');
     	return $oCtable;
@@ -64,7 +65,7 @@ class CSStoreDataUsingRedBeanPHP {
      * Deletes Product Table along with Bean
      * @access public
      */
-    function deleteProductTable()
+    public function deleteProductTable()
     {
     	R::wipe('csdataproducts');
     }
@@ -74,7 +75,7 @@ class CSStoreDataUsingRedBeanPHP {
          * Deletes  Bean Along with the Attribute Table
      * @access public
      */
-    function deleteAttributeTable()
+    public function deleteAttributeTable()
     {
     	R::wipe('csdataattribute');
     }
@@ -84,7 +85,7 @@ class CSStoreDataUsingRedBeanPHP {
         * Gets Count of Total Products Inserted. 
      	* @access public
      */
-    function getProductCount($oPtable,$id)
+   public function getProductCount($oPtable,$id)
     {
     	$iTotalCount =R::getCol('select count(*) from csdataproducts where tranactionid = '.$id);
     	return $iTotalCount[0];
@@ -95,7 +96,7 @@ class CSStoreDataUsingRedBeanPHP {
      	* @access public
      */
     
-    function createProductTransactionTable($oPtable,$id)
+    public function createProductTransactionTable($oPtable,$id)
     {
     	//$ptable = R::dispense('cstransaction');
     	$oPtable->date = date('Y-m-d',time());
