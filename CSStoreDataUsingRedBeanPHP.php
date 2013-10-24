@@ -1,8 +1,12 @@
 <?php
 
-require_once 'rb.php';
+require_once 'ormlib/rb.php';
 require_once 'CSGetDataProductForExport.php';
 require_once 'CSStoreDataInterface.php';
+/*
+* Configure the database setup
+* Define the host name,db name and password
+*/
 R::setup('mysql:host=localhost;dbname=test','root','');
 class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface {
   
