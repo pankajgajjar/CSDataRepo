@@ -18,9 +18,8 @@ $oCtable = array();
 
 //getting information about the parent Products
 $aParentProducts = CSGetDataProductForExport::getParentProducts();
+//alert($aParentProducts[0],1);
 $iTotalParentProductsCount = sizeof($aParentProducts);
-
-
 
 // Creating the Transaction Table
 
@@ -28,7 +27,6 @@ $oTest = $oCSStoreData->getTransactionObject();
 $iTid = $oCSStoreData->getTID();
 
 
-	
 //Loop for the parent Products
 for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
 {
@@ -64,6 +62,7 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
 				$oAtable[ $iParentCounter]->attributeValue = $oValue['attributeValue'];		
                 $iParentCounter++;
     }
+    
     $iAtributeidForParents = $oCSStoreData->storeAllObject($oAtable);
     
     
@@ -71,20 +70,20 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
     // Getting all the Children Information for Product in the same loop.
     $aChildrenlist = CSGetDataProductForExport::getChildrenForGivenProduct($aParentProducts[$i]);
     $iChildrenCounter=0;
-     for($j =0;$j<sizeof($aChildrenlist);$j++)
+     foreach($aChildrenlist as $key=>$value)
      {
      	// Creating Product object for Children.
         $oPtable = $oCSStoreData->getProductObject();
         
-        $aChildinformation = CSGetDataProductForExport::getProductInformationForGivenProduct($aChildrenlist[$j]);
-        $attributeListOfChild = CSGetDataProductForExport::getAllAttributesForGivenProduct($aChildrenlist[$j]);
+        $aChildinformation = CSGetDataProductForExport::getProductInformationForGivenProduct($value);
+        $attributeListOfChild = CSGetDataProductForExport::getAllAttributesForGivenProduct($value);
         $oPtable->productid = $aChildinformation['ID'];
         $oPtable->label = $aChildinformation['Label'];
         $oPtable->externalkey = $aChildinformation['ExternalKey'];
         $oPtable->owner = $aChildinformation['Owner'];
  		$oPtable->tranactionid = $iTid;
- 		$oPtable->parentid = CSGetDataProductForExport::getParentId($aChildrenlist[$j]);
- 		$oPtable->parentproductname = CSGetDataProductForExport::getParentLabel($aChildrenlist[$j]);        
+ 		$oPtable->parentid = CSGetDataProductForExport::getParentId($value);
+ 		$oPtable->parentproductname = CSGetDataProductForExport::getParentLabel($value);        
         $productid = $oCSStoreData->storeObject($oPtable);
     
          //Inserting CHildren Attributes into Attributes Table.
@@ -96,12 +95,9 @@ for ($i = 0 ; $i < $iTotalParentProductsCount ; $i ++)
 				$oCtable[ $iChildrenCounter]->attributeName = $oValue['attributeName'];
 				$oCtable[ $iChildrenCounter]->attributeValue = $oValue['attributeValue'];
                  $iChildrenCounter++;
-                
             }
                $atributeidForChildren = $oCSStoreData->storeAllObject($oCtable);
 	}
-	
-	
 
 }
 
