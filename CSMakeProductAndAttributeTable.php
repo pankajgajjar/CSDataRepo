@@ -5,6 +5,10 @@ require_once 'CSStoreDataInterface.php';
 
 $oCSStoreData = new CSStoreDataUsingRedBeanPHP();
 
+if(!$oCSStoreData instanceof CSStoreDataInterface){
+	die("oCSStoreData object is not correctly implemented.");
+}
+
 // Deleting attribute and Product Table for test Purposes
 $oCSStoreData->deleteProductTable();
 $oCSStoreData->deleteAttributeTable();
