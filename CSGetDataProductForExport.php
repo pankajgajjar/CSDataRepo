@@ -110,10 +110,13 @@ class CSGetDataProductForExport extends CSPms
 
     public function getValuesofProduct($oChild)
     {
-        //$id = $oChild->getFieldIDs();
         $attributesList = $oChild->getFormattedValues();
-
         return $attributesList;
 
+    }
+    
+    public function getAttributeName($map,$id)
+    {
+    	return $map[$id];
     }
 }

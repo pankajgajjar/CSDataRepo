@@ -7,7 +7,7 @@ require_once 'CSStoreDataInterface.php';
 * Configure the database setup
 * Define the host name,db name and password
 */
-R::setup('mysql:host=localhost;dbname=test', 'root', '');
+R::setup('mysql:host=localhost;dbname=cslivetrunk', 'root', '');
 class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface
 {
 
@@ -136,6 +136,23 @@ class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface
     {
         $iTotalCount = R::getCol('select attribute_name from attributemap where attribute_id = ' . $id);
         return $iTotalCount[0];
+    }
+    
+    public function getArrayMapForAttributes()
+    {
+    	$iTotalMap = R::getAll('select distinct conf.PdmarticleconfigurationID attribute_id, conf.Label attribute_name
+								FROM csliveTest130Pdmarticleattribute att right outer join csliveTest130Pdmarticleconfiguration conf
+								on( conf.PdmarticleconfigurationID = att.PdmarticleconfigurationID )
+								where att.VersionNrTo=0');
+    	
+    	
+    	foreach ($iTotalMap as $key => $value)
+		{
+			$newArray[$value['attribute_id']] = $value['attribute_name'];
+		}
+    	
+    	return $newArray;
+    	
     }
 
 
