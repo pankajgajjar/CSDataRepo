@@ -6,8 +6,17 @@ require_once 'CSStoreDataInterface.php';
 /*
 * Configure the database setup
 * Define the host name,db name and password
+* 
 */
-R::setup('mysql:host=localhost;dbname=cslivetrunk', 'root', '');
+
+//DbConstants Definition
+define('dbprefix', "csliveTest130");
+define('host',"localhost");
+define('dbname',"cslivetrunk");
+define('username',"root");
+define('password','');
+
+R::setup('mysql:host='.constant('host').';dbname='.constant('dbname'),constant('username'),constant('password'));
 class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface
 {
 
@@ -141,7 +150,7 @@ class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface
     public function getArrayMapForAttributes()
     {
     	$iTotalMap = R::getAll('select distinct conf.PdmarticleconfigurationID attribute_id, conf.Label attribute_name
-								FROM csliveTest130Pdmarticleattribute att right outer join csliveTest130Pdmarticleconfiguration conf
+								FROM'.' '.constant('dbprefix').'Pdmarticleattribute att right outer join'.' '.constant('dbprefix').'Pdmarticleconfiguration conf
 								on( conf.PdmarticleconfigurationID = att.PdmarticleconfigurationID )
 								where att.VersionNrTo=0');
     	

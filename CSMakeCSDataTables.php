@@ -64,9 +64,13 @@ for ($i = 0; $i < sizeof($oProductList); $i++) {
     }
 }
 
-$iTrid = CSStoreDataUsingRedBeanPHP::createProductTransactionTable($oTest, $iTid);
 $iProductid = CSStoreDataUsingRedBeanPHP::storeAllObject($oPtable);
 $iAtributeidForParents = CSStoreDataUsingRedBeanPHP::storeAllObject($oAtable);
 
+
 //Calculating Total Time
 print_r(microtime(true) - $iTimer . '  ' . 'sec');
+
+
+
+$iTrid = CSStoreDataUsingRedBeanPHP::createProductTransactionTable($oTest, $iTid);
