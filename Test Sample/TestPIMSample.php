@@ -38,7 +38,7 @@ echo '<br/>the configuration is created with name '.$configuration->getlabel().'
 
 $attribute = CSPms::createField('PankajAttribute',$configurationID,CSITEM_POSITION_CHILD,'caption');
 $attributeID = $attribute->store();
-$attribute->checkin(); 
+//$attribute->checkin(); 
 
 echo '<br/>the attribute is created with name '. $attribute->getLabel().' and it attribute id '.$attributeID;
 
@@ -47,9 +47,10 @@ echo '<br/>the attribute is created with name '. $attribute->getLabel().' and it
  */
 
 $attribute = CSPms::getApiItem($attributeID);
-$attribute->checkout();
+//$attribute->checkout();
 $attribute->setValue('ParentID', $configurationID);
-$attribute->checkin();
+$attribute->store();
+//$attribute->checkin();
 
 echo '<br/>the attribute name '.$attribute->getLabel().' is assigned to class or configuration '.$configuration->getLabel();
 		
@@ -60,6 +61,7 @@ echo '<br/>the attribute name '.$attribute->getLabel().' is assigned to class or
 $product = CSPms::getProduct($productID);
 $product->checkout();
 $product->setBaseField($configurationID);
+$product->store();
 $product->checkin();
 
 echo '<br/> the product name '.$product->getLabel().' has configuration or class '.$configuration->getLabel();
@@ -69,6 +71,7 @@ echo '<br/> the product name '.$product->getLabel().' has configuration or class
 $product = CSPms::getProduct($productID);
 $product->checkout();
 $product->setValue($attributeID,'PankajValue');
+$product->store();
 $product->checkin();
 
 echo '<br/>the product name '.$product->getLabel().' has attribute name '.$attribute->getLabel().' and it value is'.$product->getValue($attributeID);
