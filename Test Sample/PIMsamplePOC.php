@@ -3,7 +3,7 @@
 * Create Product Folder for Storing all the newly created products
 */
 
-$productfolder = CSPms::createProductFolder('AnindyaFolder',null,CSITEM_POSITION_CHILD,0);
+$productfolder = CSPms::createProductFolder('ProductFolder',null,CSITEM_POSITION_CHILD,0);
 $productfolderID = $productfolder->store();
 $productfolder->checkin();
 
@@ -15,7 +15,7 @@ echo '<br/>the product folder is created with folder name '.$productfolder->getL
 * Create one Product under the above defined Product Folder
 */
 
-$product = CSPms::createProduct('AnindyaProduct',$productfolderID);
+$product = CSPms::createProduct('Product1',$productfolderID);
 $productID = $product->store();
 $product->checkin();
 
@@ -23,36 +23,34 @@ echo '<br/> the product is created with product name '.$product->getLabel().' an
 
 
 /**
-* Create Class or Configuration for the given Product
+* Create Class for the given Product
 */
 
-$configuration = CSPms::createConfiguration('AnindyaConfiguration',null,CSITEM_POSITION_CHILD);
-$configurationID = $configuration->store();
+$class = CSPms::createClass('Class1',null,CSITEM_POSITION_CHILD);
+$classID = $class->store();
 
-echo '<br/>the configuration is created with name '.$configuration->getlabel().' and it configuration id '.$configurationID;
+echo '<br/>the configuration is created with name '.$class->getlabel().' and it configuration id '.$classID;
 
 
 /**
 * Create Attributes to assign to the Given Configuration
 */
 
+$configuration = CSPms::createConfiguration('Configuration1',null,CSITEM_POSITION_CHILD);
+$configurationId = $configuration->store();
+
+
 $attributeID = array();
 
  for($i=0; $i<2; $i++)
  {
-	$attribute = CSPms::createField('AnindyaAttribute'.$i,$configurationID,CSITEM_POSITION_CHILD,'caption');
+	$attribute = CSPms::createField('Attribute_'.$i,$configurationId,CSITEM_POSITION_CHILD,'caption');
 	$attributeID[$i] = $attribute->store();
+	$class->addField($attribute->getID());
+	$class->store();
  }
  
  echo '<br/>the attributes is created with and stored inside the array' ;
- 
- 
- 
- 
- 
- 
- echo '<br/>.The attributes were assigned to created Configuration';
- 
  
  
  /**
@@ -61,11 +59,11 @@ $attributeID = array();
 
 $product = CSPms::getProduct($productID);
 $product->checkout();
-$product->setBaseField($configurationID);
+$product->setBaseField($classID);
 $product->store();
 $product->checkin();
 
-echo '<br/> the product name '.$product->getLabel().' has configuration or class '.$configuration->getLabel();
+echo '<br/> the product name '.$product->getLabel().' has configuration or class '.$class->getLabel();
 
 
 /**
@@ -77,7 +75,7 @@ $keyValue = array();
 
 for($j=0; $j<sizeof($attributeID); $j++)
 {
-	$keyValue[$attributeID[$j]]= 'AnindyaValue'.$j;
+	$keyValue[$attributeID[$j]]= 'Value_'.$j;
 }
 
 
