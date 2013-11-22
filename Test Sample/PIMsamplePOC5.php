@@ -52,7 +52,7 @@ $configurationId = $configuration->store();
 /**
  *  Creating Attribute under the defined configuration and assign that attribute to given class object 
  */
-	$attribute = CSPms::createField('Attribute_ProductRefType2',$configurationId,CSITEM_POSITION_CHILD,'reference'); //?articlereference ?
+	$attribute = CSPms::createField('Attribute_ProductRefType2',$configurationId,CSITEM_POSITION_CHILD,'articlereference','pdm'); //?articlereference ?
 	$attributeID = $attribute->store();
 	$class->addField($attributeID);
 	$class->store();
@@ -79,13 +79,13 @@ echo '<br/> the product name '.$product->getLabel().' has configuration or class
 /**
  * Setting more than one values to this product ref attribute.
  */
-$refProduct = '80';
+$refProduct = array('81','80');
 $languageID = 'en';
 $additionalArray = array('ParamH'=>'PdmArticle');
 
 $product = CSPms::getProduct($productID);
 $product->checkout();
-$product->setReferences($attributeID,array($refProduct),array(), $languageID,$additionalArray);
+$product->setReferences($attributeID,$refProduct,array(), $languageID,$additionalArray);
 $product->store();
 $product->checkin();
 
