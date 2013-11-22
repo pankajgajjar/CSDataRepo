@@ -52,7 +52,7 @@ $configurationId = $configuration->store();
 /**
  *  Creating Attribute under the defined configuration and assign that attribute to given class object 
  */
-    $ItemconfigurationID = '223';
+    $ItemconfigurationID = '223';//this class has limited attribute information:)
 	$attribute = CSPms::createField('Attribute_TableType',$configurationId,CSITEM_POSITION_CHILD,'table'); //?articlereference ?
 	$attribute->setValue('ItemconfigurationID',$ItemconfigurationID);
 	$attributeID = $attribute->store();
@@ -71,9 +71,7 @@ $product->setBaseField($classID);
 $product->store();
 $product->checkin();
 
-
 echo '<br/> the product name '.$product->getLabel().' has configuration or class '.$class->getLabel();
-
 
 /**
  * Setting Table Value to this attribute.
@@ -83,14 +81,21 @@ $product->checkout();
 
 $valueTable = $product->getTable($attributeID);
 
+/**
+ * Get list of attributes for this table class
+ */
+$itemconfiguration = CSPms::getField($ItemconfigurationID);
+
+//Adding one row for this table
 $row1 = $valueTable->addRow();
-
-$row1->setValue('ParamA','India1');
-$row1->setValue('ParamB','India2');
-$row1->setValue('ParamC','India3');
-
+//Setting values for each attribute of this table class
+foreach ($itemconfiguration->getLinkedIDs() as $attriID){
+	$row1->setValue($attriID,'India1'.$attriID);
+}
+//Saving this row 
 $row1->store();
-alert($row1,1);
+
+//Saving this Product
 $product->store();
 $product->checkin();
 
