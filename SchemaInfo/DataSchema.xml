@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<entities>
+<!--
+entity must have default fields are as following
+1) ID
+2) Label
+3) Language
+4) External Key
+5) Entity ID
+6) CreationDate
+7) Client ID
+8) Transaction ID 
+
+field "hasBridge" is indicate attribute-values are stored/related using bridge concept. 
+ -->
+	<entity type="product" hasBridge="true"/>
+	<entity type="compatiblity" hasBridge="true"/>
+	<entity type="productrelation" hasBridge="false"/>
+	<entity type="productreference" hasBridge="false" srcType="product" targetType="product"/>
+</entities>
+<attributes>
+<!-- 
+attribute must have default fields are as following
+1) ID
+2) Label
+3) Language
+4) External Key
+5) Entity Type
+6) CreationDate
+7) Client ID
+8) Transaction ID 
+ -->
+	<attribute name = "Fitting Position" type = "valuerange" module="pdm"/>
+	<attribute name = "Name" type = "caption" module="pdm"/>
+	<attribute name = "Variant" type = "table" module="pdm"/>
+	<attribute name = "ProductRef" type = "articlereference" module="pdm"/>
+</attributes>
+</data>
