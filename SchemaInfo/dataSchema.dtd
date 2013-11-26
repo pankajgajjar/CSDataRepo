@@ -1,0 +1,14 @@
+<!DOCTYPE data [
+<!ELEMENT data (entities,attributes)>
+<!ELEMENT entities (entity+)>
+<!ELEMENT attributes (attribute+)>
+
+<!ATTLIST entity type CDATA #REQUIRED>
+<!ATTLIST entity hasBridge (true/false) "false">
+<!ATTLIST entity srcType CDATA>
+<!ATTLIST entity targetType CDATA>
+<!ATTLIST attribute name CDATA #REQUIRED>
+<!ATTLIST attribute type (caption|valuerange|table|articlereference) "caption">
+<!ATTLIST attribute module(pdm|mam) "pdm">
+]>
+

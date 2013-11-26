@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root-element SYSTEM "dataSchema.dtd">
 <data>
 <entities>
 <!--
@@ -11,7 +12,6 @@ entity must have default fields are as following
 6) CreationDate
 7) Client ID
 8) Transaction ID 
-
 field "hasBridge" is indicate attribute-values are stored/related using bridge concept. 
  -->
 	<entity type="product" hasBridge="true"/>
