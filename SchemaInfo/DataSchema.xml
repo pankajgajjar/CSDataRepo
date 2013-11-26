@@ -12,7 +12,8 @@ entity must have default fields are as following
 7) Client ID
 8) Transaction ID 
 
-field "hasBridge" is indicate attribute-values are stored/related using bridge concept. 
+if field "hasBridge" value "true"  is indicate attribute-values are stored/related using bridge concept. 
+else it's flat table concept.
  -->
 	<entity type="product" hasBridge="true"/>
 	<entity type="compatiblity" hasBridge="true"/>
