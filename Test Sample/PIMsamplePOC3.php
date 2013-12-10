@@ -105,6 +105,7 @@ $product = CSPms::getProduct($productID);
 $product->checkout();
 // Using setValues Instead of setValue 
 //TODO ..insteading value, pass valueRangeID "ID1\nID2\n\ID3"
+//TODO Anothor way to resolve  $this->setValue($key, $value, $dataArray['LanguageID']);
 $product->importValue($attributeID,"Front\nRear\nTop",array());
 $product->store();
 $product->checkin();
