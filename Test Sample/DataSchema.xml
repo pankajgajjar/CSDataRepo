@@ -41,9 +41,11 @@ attribute must have default fields are as following
 7) Client ID
 8) Transaction ID 
  -->
-	<attribute name = "FittingPosition" type = "valuerange" module="pdm"/>
-	<attribute name = "Name" type = "caption" module="pdm"/>
-	<attribute name = "Variant" type = "table" module="pdm"/>
-	<attribute name = "ProductRef" type = "articlereference" module="pdm"/>
+	<attribute name = "FittingPosition" externalkey = "1001" type = "valuerange" module="pdm"/>
+	<attribute name = "FittingPosition" externalkey = "1002" type = "valuerange" module="pdm"/>
+	
+	<attribute name = "Name" externalkey = "1003" type = "caption" module="pdm"/>
+	<attribute name = "Variant" externalkey = "1004" type = "table" module="pdm"/>
+	<attribute name = "ProductRef" externalkey = "1005" type = "articlereference" module="pdm"/>
 </attributes>
 </data>

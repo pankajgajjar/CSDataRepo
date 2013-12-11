@@ -2,6 +2,7 @@
 class  CSDataSchemaFileUtil
 {
 	private $_aAttributeValueList = array();
+	private $_aAttributeExternalValueList = array();
 	private $_aEntityObjectList = array();
 	private $_aXmlData = NULL;
 	private $_sFilePath = NULL;
@@ -28,11 +29,15 @@ class  CSDataSchemaFileUtil
 		
 		$oXmlFile = simplexml_load_file($this->_sFilePath);
 		
-		$oAttribute = $oXmlFile->attributes; 		    
+		$oAttribute = $oXmlFile->attributes; 
+				    
 		foreach ($oAttribute->attribute as $childAttr){
 			$key = $childAttr["name"];
 			$value = $childAttr["type"];
+			$externalKey = $childAttr["externalkey"];
+			
 			$this->_aAttributeValueList[trim($key)] = $value;
+			$this->_aAttributeExternalValueList[trim($externalKey)] = $value;
 		}
 		
 		$oEnities = $oXmlFile->entities;
@@ -53,29 +58,57 @@ class  CSDataSchemaFileUtil
 		return $this->_aAttributeValueList[$sAttributeLabel];
 	}
 	
-	public function isAttributeValueList($sAttributeLabel){
+	public function isAttributeLabelHasValueList($sAttributeLabel){
 		if($this->_aAttributeValueList[$sAttributeLabel] == self::$ATTRIBUTE_VALUERANGE){
 			return true;
 		}
 		return false;
 	}
 	
-	public function isAttributeCaption($sAttributeLabel){
+	public function isAttributeExternalKeyHasValueList($sExternalKey){
+		if($this->_aAttributeExternalValueList[$sExternalKey] == self::$ATTRIBUTE_VALUERANGE){
+			return true;
+		}
+		return false;
+	}
+	
+	public function isAttributeLabelHasCaption($sAttributeLabel){
 		if($this->_aAttributeValueList[$sAttributeLabel] == self::$ATTRIBUTE_CAPTION){
+			return true;
+		}
+		return false;
+	}
+	
+	public function isAttributeExternalKeyHasCaption($sExternalKey){
+		if($this->_aAttributeExternalValueList[$sExternalKey] == self::$ATTRIBUTE_CAPTION){
 			return true;
 		}
 		return false;
 	}
 }
 
-echo "Started</br>";
+########################## TEST CASES #############################
+echo "Test Cases Started</br>";
+//Data
 $sFilePath = "../CSLive/DataSchema.xml";
 
+//Initialize
 $oDataSchemaFile = new CSDataSchemaFileUtil($sFilePath);
 $oDataSchemaFile->parseDataSchemaFile();
 
-//var_dump($oDataSchemaFile->getAttributesList());
-//var_dump($oDataSchemaFile->getEntitiesList());
-var_dump($oDataSchemaFile->isAttributeValueList("FittingPosition"));
-var_dump($oDataSchemaFile->isAttributeCaption("FittingPosition"));
-echo "</br>end";
+//Validation
+assertCSData($oDataSchemaFile->isAttributeLabelHasValueList("FittingPosition"),true);
+assertCSData($oDataSchemaFile->isAttributeLabelHasCaption("FittingPosition"),false);
+
+assertCSData($oDataSchemaFile->isAttributeExternalKeyHasValueList("1001"),true);
+assertCSData($oDataSchemaFile->isAttributeExternalKeyHasCaption("1001"),false);
+
+function assertCSData($condition,$expectedValue)
+{
+	if ($condition != $expectedValue) {
+		throw new Exception('Test case failed.');
+	}
+	print "<br/>Test case Passed.";
+}
+
+echo "<br/>Test case end";
