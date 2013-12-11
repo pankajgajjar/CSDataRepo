@@ -1,5 +1,5 @@
 <?php
-class  ParseDataSchemaFileUtil
+class  CSDataSchemaFileUtil
 {
 	private $_aAttributeValueList = array();
 	private $_aEntityObjectList = array();
@@ -7,8 +7,8 @@ class  ParseDataSchemaFileUtil
 	private $_sFilePath = NULL;
 	
 	###############CONSTANT VARIABLE#########
-	private  static $ATTRIBUTE_CAPTION = 'caption';
-	private  static $ATTRIBUTE_VALUERANGE = 'valuerange';
+	public static $ATTRIBUTE_CAPTION = 'caption';
+	public static $ATTRIBUTE_VALUERANGE = 'valuerange';
 	
 	
 	##############CONSTRUCT##################
@@ -32,12 +32,12 @@ class  ParseDataSchemaFileUtil
 		foreach ($oAttribute->attribute as $childAttr){
 			$key = $childAttr["name"];
 			$value = $childAttr["type"];
-			$_aAttributeValueList[trim($key)] = $value;
+			$this->_aAttributeValueList[trim($key)] = $value;
 		}
 		
 		$oEnities = $oXmlFile->entities;
 		foreach ($oEnities->entity as $childEntity){
-			$_aEntityObjectList = $childEntity;
+			$this->_aEntityObjectList = $childEntity;
 		}
 	}
 	
@@ -54,26 +54,28 @@ class  ParseDataSchemaFileUtil
 	}
 	
 	public function isAttributeValueList($sAttributeLabel){
-		if($this->_aAttributeValueList[$sAttributeLabel] == $ATTRIBUTE_VALUERANGE){
+		if($this->_aAttributeValueList[$sAttributeLabel] == self::$ATTRIBUTE_VALUERANGE){
 			return true;
 		}
 		return false;
 	}
 	
 	public function isAttributeCaption($sAttributeLabel){
-		if($this->_aAttributeValueList[$sAttributeLabel] == $ATTRIBUTE_CAPTION){
+		if($this->_aAttributeValueList[$sAttributeLabel] == self::$ATTRIBUTE_CAPTION){
 			return true;
 		}
 		return false;
 	}
 }
 
-echo "Started";
+echo "Started</br>";
 $sFilePath = "../CSLive/DataSchema.xml";
 
-$oDataSchemaFile = new ParseDataSchemaFileUtil($sFilePath);
+$oDataSchemaFile = new CSDataSchemaFileUtil($sFilePath);
 $oDataSchemaFile->parseDataSchemaFile();
 
-var_dump($oDataSchemaFile->getAttributesList());
-var_dump($oDataSchemaFile->getEntitiesList());
-echo "end";
+//var_dump($oDataSchemaFile->getAttributesList());
+//var_dump($oDataSchemaFile->getEntitiesList());
+var_dump($oDataSchemaFile->isAttributeValueList("FittingPosition"));
+var_dump($oDataSchemaFile->isAttributeCaption("FittingPosition"));
+echo "</br>end";
