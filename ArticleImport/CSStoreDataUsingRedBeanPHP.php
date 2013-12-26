@@ -163,6 +163,16 @@ class CSStoreDataUsingRedBeanPHP implements CSStoreDataInterface
     	return $newArray;
     	
     }
+    
+    public function storeMappingTransactionTable($attributeArray)
+    {
+    	foreach($attributeArray as $key => $value)
+    	{
+    		R::exec('Insert into cs_transaction_map values('."'".$value."'".","."'".$key."')");
+    	}	
+    	
+    	
+    }
 
 
 }

@@ -1,9 +1,19 @@
 <?php
 
 
+/**
+ * Gets All Languages from Staging Area and Checks if they Exisist within ContentServ. If Not
+ * Language is Created
+ * @author Anindya Gangakhedkar
+ *
+ */
 class CSImportLanguage
 {
 	
+	/**
+	 * Checks Available Languages in ContentServ. 
+	 * @return $languageArray with shortname as key and languageId as value
+	 */
 	public function CheckAvailableLanguages()
 	{
 		$languageArray= array();
@@ -15,6 +25,11 @@ class CSImportLanguage
 		return $languageArray;
 	}
 	
+	/**
+	 *Checks if the language Exists Otherwise Inserts it
+	 * @param unknown_type $language
+	 * @return $newLanguageId returns languageID
+	 */
 	public function checkIfLanguageExists($language)
 	{
 		$languageArray = self::CheckAvailableLanguages();
@@ -30,6 +45,11 @@ class CSImportLanguage
 	}
 	
 	
+	/**
+	 * Inserts New Language
+	 * @param  $languageName name of the language
+	 * @return returns languageId
+	 */
 	public function InsertNewLanguage($languageName)
 	{
 		$languageId = CSLanguage::createLanguage($languageName,$languageName);
@@ -37,6 +57,11 @@ class CSImportLanguage
 	}
 	
 	
+	/**
+	 * Makes a Language Array with Id
+	 * @param  $languageArray
+	 * @return $languageIdArray language array with key as language and id as value.
+	 */
 	public function MakeLanguageArrayWithLanguageID($languageArray)
 	{
 		$languageIdArray = array();
