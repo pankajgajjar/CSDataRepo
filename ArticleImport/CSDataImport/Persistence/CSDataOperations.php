@@ -1,5 +1,5 @@
 <?php
-require_once '../'.CS::getProjectName().'/plugins/CSDataImport/Referenced Libraries/rb.php';
+require_once '../'.CS::getProjectName().'/plugins/CSDataImport/ExtLib/rb.php';
 require_once '../'.CS::getProjectName().'/plugins/CSDataImport/Persistence/ICSDataOperation.php';
 
 /**
