@@ -74,13 +74,15 @@ class CSUpdateArticle implements ICSUpdateArticle
 	 */
 	public function getUpdatedAttributeValuesWithProduct()
 	{
+		
 		$updatedValues = $this->dataOperations->getAll('SELECT v.VALUE,v.Language_Code, a.ExternalKey as attrExt,art.EXTERNALKEY as pdExt FROM cs_stg_bridge_artcl_attribute s, cs_stg_incr_attribute a,
 		 												cs_stg_incr_attribute_value v,cs_stg_incr_article art, cs_stg_bridge_attributes sb
 		    											WHERE sb.ATTR_STG_ID = a.ATTR_STG_ID AND sb.ATTR_VALUE_STG_ID = v.ATTR_VALUE_STG_ID  
 		    											and s.ATTR_STG_BRIDGE_ID = sb.ATTR_STG_BRIDGE_ID  and a.Language_Code= v.Language_Code
 		    											and s.ARTCL_STG_ID = art.ARTCL_STG_ID 
-		    											and s.IS_DELETED ='."'U'"." ".
+		    											and s.IS_DELETED IN('."'N'".",'U')".
         												'and s.TRANS_ID = (select MAX(TRANS_ID) from cs_stg_bridge_artcl_attribute)');
+		
 		return $updatedValues;
 		
 	}
@@ -96,12 +98,15 @@ class CSUpdateArticle implements ICSUpdateArticle
 			$product->checkin(); 
 		}
 	}
+	
+	
 			
 	
 	public function updateAttributeLabels($updatedArticleLabels)
 	{
 		foreach ($updatedArticleLabels as $attrLabel)
 		{
+			//alert($updatedArticleLabels);
 			$CSid = self::getCSIDForAttribute($attrLabel['EXTERNALKEY']);
 			$attribute = CSPms::getField($CSid);
 			$attribute->setValue('Label',$attrLabel['Label']);

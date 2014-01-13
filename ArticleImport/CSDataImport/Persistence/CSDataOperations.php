@@ -7,23 +7,17 @@ require_once '../'.CS::getProjectName().'/plugins/CSDataImport/Persistence/ICSDa
  * @author Anindya Gangakhedkar
  */
 
-//Setting up the Database Connection.
 
-//DbConstants Definition
-define('dbprefix', "csliveTest130");
-define('host',"localhost");
-define('dbname',"cslivetrunk");
-define('username',"root");
-define('password','');
-
-//R::setup('mysql:host='.constant('host').';dbname='.constant('dbname'),constant('username'),constant('password'));
+//Reading DBConfig.ini file
+define('db_conf_file','../'.CS::getProjectName().'/plugins/CSDataImport/Persistence/Resources/DBConfig.ini');
 
 class CSDataOperations implements ICSDataOperations
 {
 	
 	public function __construct()
 	{
-		R::setup('mysql:host='.constant('host').';dbname='.constant('dbname'),constant('username'),constant('password'));
+		$aDBConfig = parse_ini_file(constant('db_conf_file'));
+		R::setup('mysql:host='.$aDBConfig['host'].';dbname='.$aDBConfig['dbname'],$aDBConfig['username'],$aDBConfig['password']);
 	}
 	
 	/**

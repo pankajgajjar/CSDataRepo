@@ -27,7 +27,6 @@ class CSDeleteArticle implements ICSDeleteArticle
 									 where IS_DELETED='."'Y'"." ". 
 									 'and TRANS_ID= (Select MAX(TRANS_ID) from cs_stg_incr_article) Group By ExternalKey');
 		
-		alert($deletedArticles);
 		return $deletedArticles;
 	}
 	

@@ -11,6 +11,8 @@ class CSArticleImport implements ICSArticleImport
 {
 	
 	private $dataOperation;
+	
+	private $category='Meyle-PIM';
 
 	public function __construct()
 	{
@@ -472,11 +474,10 @@ class CSArticleImport implements ICSArticleImport
 		{
 			$attribute = CSPms::createField($range['label'],$currentConfigurationID,CSITEM_POSITION_CHILD,'valuerange');
 			$attributeID[$range['EXTERNALKEY']] = $attribute->store();
-			//TODO one time store for class
 			$currentClass->addField($attribute->getID());
 			$currentClass->store();
 
-			$valueRangeType = CSValueRange::createRangeType($range['label'].'-'.$range['EXTERNALKEY']);
+			$valueRangeType = CSValueRange::createRangeType($range['label'].'-'.$range['EXTERNALKEY'],1,'',null, $this->category,false);
 			$valueRangeTypeID = $valueRangeType->getID();
 
 			$attribute->setValue('ParamA', $valueRangeTypeID);
