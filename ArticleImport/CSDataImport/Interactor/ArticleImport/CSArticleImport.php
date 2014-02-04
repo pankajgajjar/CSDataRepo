@@ -79,9 +79,12 @@ class CSArticleImport implements ICSArticleImport
 			$product->setValue("Label",self::getUniqueLanguageLabel($externalKey,$key),$value);
 			$product->setValue("ExternalKey",$externalKey);
 		}
-		$productID = $product->store();
-		$product->checkin();
-		return $productID;
+		
+		//changes
+		//$productID = $product->store();
+		//$product->checkin();
+		//return $productID;
+		return $product;
 	}
 	
 	
@@ -502,15 +505,14 @@ class CSArticleImport implements ICSArticleImport
 	{
 		foreach($articles as $resultArray)
 		{
-			$currentProductID = self::createProduct($resultArray['Label'],$meyleDataFolderID,$languageArrayWithID,$resultArray['ExternalKey']);
+			$product = self::createProduct($resultArray['Label'],$meyleDataFolderID,$languageArrayWithID,$resultArray['ExternalKey']);
+			
+			$product->setBaseField($currentClassID);
+			$product->store();
 			foreach($languageArrayWithID as $attrLang => $attrLanID)
 			{
-				$product = CSPms::getProduct($currentProductID);
-				$product->checkout();
-				$product->setBaseField($currentClassID);
-				$product->store();
-				$product->checkin();
 
+				$product->setCurrentLanguageId($attrLanID, FALSE);
 				$currentSingleAttributes = null;
 				$currentSingleAttributes = self::getSingleValueAttributesforProduct($resultArray['ExternalKey'],$attrLang);
 
@@ -521,8 +523,12 @@ class CSArticleImport implements ICSArticleImport
 					{
 						$keyValue[$attributeID[$value['EXTERNALKEY']]] = $value['value'];
 					}						
-					$product->checkout();
-					$product->setValues($keyValue,$attrLanID);
+					foreach ($keyValue as $key => $value)
+					{
+						$product->setValue($key, $value);
+					}
+					
+					
 				}
 				$currentValueLists = null;
 				$currentValueLists = self::getValueListFromAttributeResult($resultArray['ExternalKey']);
@@ -533,13 +539,15 @@ class CSArticleImport implements ICSArticleImport
 					{
 						$resultforconcat = self::getMultiValuedValuesforProduct($resultArray['ExternalKey'],$list['EXTERNALKEY']);
 						$output = self::concatValuesWithNewLine($resultforconcat);
-						$product->checkout();
+						
 						$product->importValue($attributeID[$list['EXTERNALKEY']],$output,array());
 					}
 				}
-				$product->store();
-				$product->checkin();
+					
 			}
+			$product->store();
+			$product->checkin();
+			
 		}
 		
 	}

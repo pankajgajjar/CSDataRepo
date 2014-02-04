@@ -33,6 +33,7 @@ class CSImportLanguage implements ICSImportLanguage
 	public function checkIfLanguageExists($language)
 	{
 		$languageArray = self::CheckAvailableLanguages();
+		alert($language);
 		if($languageArray[$language] == null)
 		{
 			$newLanguageId = self::InsertNewLanguage($language);
@@ -73,6 +74,8 @@ class CSImportLanguage implements ICSImportLanguage
 		return $languageIdArray;
 		
 	}
+	
+	
 	
 
 }
